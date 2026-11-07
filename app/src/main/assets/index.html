@@ -1,33 +1,188 @@
 <!doctype html>
-<html lang="ur"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ur">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mera Hisab</title>
 <style>
-*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f4f6f8;color:#18212b;margin:0;padding:16px}
-h1{margin:4px 0 14px;color:#126b55}.card{background:white;padding:14px;border-radius:14px;margin:10px 0;box-shadow:0 2px 8px #0001}
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f4f6f8;color:#18212b;margin:0;padding:16px}
+.header{text-align:center;background:linear-gradient(145deg,#075b45,#138365);color:#fff;padding:22px 12px;border-radius:18px;margin-bottom:14px;box-shadow:0 4px 12px #0002}
+.logo{width:105px;height:105px;margin:auto auto 10px;background:linear-gradient(145deg,#f9e5a5,#c99a35);border:4px solid #fff;border-radius:25px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 3px 10px #0003}
+.logo .rs{font-size:39px;font-weight:900;color:#075b45}
+.logo .coin{position:absolute;right:-8px;top:-8px;background:#fff0c2;color:#956713;border:2px solid #bd9136;border-radius:50%;width:30px;height:30px;font-weight:bold;display:grid;place-items:center}
+.logo .chart{position:absolute;bottom:5px;left:8px;color:#075b45;font-size:19px}
+.logo .calc{position:absolute;bottom:5px;right:8px;color:#075b45;font-size:19px}
+.header h1{font-size:25px;margin:5px 0;color:#fff}
+.tagline{font-size:13px;color:#f9e7b5;letter-spacing:.3px}
+.card{background:white;padding:14px;border-radius:14px;margin:10px 0;box-shadow:0 2px 8px #0001}
+h3{margin-top:3px;color:#126b55}
 input,select,button{width:100%;padding:12px;margin:6px 0;border:1px solid #ccd4d9;border-radius:9px;font-size:16px}
-button{background:#126b55;color:white;border:0;font-weight:bold}.stats{display:flex;gap:8px}.stats div{flex:1;background:#e8f4ef;padding:12px;border-radius:10px;text-align:center}
-small{color:#65727c}li{padding:8px 0;border-bottom:1px solid #eee}
-</style></head><body>
-<h1>میرا حساب</h1><div class="stats"><div>آمدن<br><b id="income">Rs 0</b></div><div>خرچ<br><b id="expense">Rs 0</b></div><div>بقیہ<br><b id="balance">Rs 0</b></div></div>
-<div class="card"><h3>نئی انٹری</h3><select id="type"><option value="income">آمدن</option><option value="expense">خرچ</option></select>
-<input id="amount" type="number" min="1" placeholder="رقم (PKR)"><input id="category" placeholder="کیٹیگری مثلاً تنخواہ، کھانا">
-<input id="date" type="date"><input id="note" placeholder="تفصیل (اختیاری)"><button onclick="add()">محفوظ کریں</button></div>
-<div class="card"><h3>رپورٹ</h3><select id="period" onchange="render()"><option value="all">تمام ریکارڈ</option><option value="day">آج</option><option value="week">اس ہفتے</option><option value="month">اس مہینے</option></select><ul id="history"></ul><button onclick="exportCSV()">CSV ایکسپورٹ</button><button onclick="backup()">بیک اپ ڈاؤن لوڈ</button><input type="file" id="restoreFile" accept="application/json" onchange="restore(event)"><small>ڈیٹا اسی موبائل میں محفوظ رہتا ہے۔ بیک اپ اختیاری ہے۔</small></div>
+button{background:#126b55;color:white;border:0;font-weight:bold}
+.stats{display:flex;gap:8px}
+.stats div{flex:1;background:#e8f4ef;padding:12px 5px;border-radius:10px;text-align:center;font-size:14px}
+small{color:#65727c}
+li{padding:8px 0;border-bottom:1px solid #eee;overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <span class="coin">Rs</span>
+    <span class="rs">Rs</span>
+    <span class="chart">📈</span>
+    <span class="calc">▦</span>
+  </div>
+  <h1>میرا حساب</h1>
+  <div class="tagline">Apne Kharchay Ka Pura Hisab</div>
+</div>
+
+<div class="stats">
+  <div>آمدن<br><b id="income">Rs 0</b></div>
+  <div>خرچ<br><b id="expense">Rs 0</b></div>
+  <div>بقیہ<br><b id="balance">Rs 0</b></div>
+</div>
+
+<div class="card">
+<h3>نئی انٹری</h3>
+<select id="type">
+<option value="income">آمدن</option>
+<option value="expense">خرچ</option>
+</select>
+<input id="amount" type="number" min="1" placeholder="رقم (PKR)">
+<input id="category" placeholder="کیٹیگری مثلاً تنخواہ، کھانا">
+<input id="date" type="date">
+<input id="note" placeholder="تفصیل (اختیاری)">
+<button onclick="add()">محفوظ کریں</button>
+</div>
+
+<div class="card">
+<h3>رپورٹ</h3>
+<select id="period" onchange="render()">
+<option value="all">تمام ریکارڈ</option>
+<option value="day">آج</option>
+<option value="week">اس ہفتے</option>
+<option value="month">اس مہینے</option>
+</select>
+<ul id="history"></ul>
+<button onclick="exportCSV()">CSV ایکسپورٹ</button>
+<button onclick="backup()">بیک اپ ڈاؤن لوڈ</button>
+<input type="file" id="restoreFile" accept="application/json" onchange="restore(event)">
+<small>ڈیٹا اسی موبائل میں محفوظ رہتا ہے۔ بیک اپ اختیاری ہے۔</small>
+</div>
+
 <script>
-const key='meraHisabEntries';let entries=JSON.parse(localStorage.getItem(key)||'[]');
-date.value=new Date().toISOString().slice(0,10);
-function save(){localStorage.setItem(key,JSON.stringify(entries));render()}
-function add(){let a=Number(amount.value);if(!a||a<=0){alert('درست رقم درج کریں');return}
-entries.unshift({type:type.value,amount:a,category:category.value||'دیگر',date:date.value,note:note.value});
-amount.value='';note.value='';save()}
-function inPeriod(e,p){let d=new Date(e.date+'T00:00:00'),n=new Date();if(p==='day')return e.date===dateISO(n);if(p==='month')return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();if(p==='week'){let start=new Date(n);start.setDate(n.getDate()-((n.getDay()+6)%7));start.setHours(0,0,0,0);return d>=start&&d<=n}return true}
-function dateISO(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function render(){let p=period.value,arr=entries.filter(e=>inPeriod(e,p)),i=arr.filter(e=>e.type==='income').reduce((s,e)=>s+e.amount,0),x=arr.filter(e=>e.type==='expense').reduce((s,e)=>s+e.amount,0);
-income.textContent='Rs '+i.toLocaleString();expense.textContent='Rs '+x.toLocaleString();balance.textContent='Rs '+(i-x).toLocaleString();
-history.innerHTML=arr.map((e,idx)=>`<li><b>${e.type==='income'?'آمدن':'خرچ'}: Rs ${e.amount.toLocaleString()}</b><br>${e.category} — ${e.date}<br><small>${e.note||''}</small> <button onclick="del(${entries.indexOf(e)})">حذف</button></li>`).join('')||'<li>ابھی کوئی ریکارڈ نہیں</li>'}
-function del(i){if(confirm('یہ انٹری حذف کریں؟')){entries.splice(i,1);save()}}
-function backup(){let b=new Blob([JSON.stringify(entries,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='mera-hisab-backup.json';a.click();URL.revokeObjectURL(a.href)}
-function restore(ev){let f=ev.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(Array.isArray(d)){entries=d;save();alert('بیک اپ بحال ہوگیا')}else alert('غلط فائل')}catch(e){alert('فائل درست نہیں')}};r.readAsText(f)}
-function exportCSV(){let rows=[['Type','Amount','Category','Date','Note'],...entries.map(e=>[e.type,e.amount,e.category,e.date,e.note])];let csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='mera-hisab.csv';a.click();URL.revokeObjectURL(a.href)}
+const key='meraHisabEntries';
+const el=id=>document.getElementById(id);
+let entries=[];
+try{
+ entries=JSON.parse(localStorage.getItem(key)||'[]');
+ if(!Array.isArray(entries)) entries=[];
+}catch(e){entries=[];}
+
+el('date').value=dateISO(new Date());
+
+function dateISO(d){
+ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function save(){
+ localStorage.setItem(key,JSON.stringify(entries));
+ render();
+}
+
+function add(){
+ let a=Number(el('amount').value);
+ if(!a||a<=0){alert('درست رقم درج کریں');return;}
+ entries.unshift({
+ type:el('type').value,
+ amount:a,
+ category:el('category').value||'دیگر',
+ date:el('date').value||dateISO(new Date()),
+ note:el('note').value
+ });
+ el('amount').value='';
+ el('note').value='';
+ save();
+}
+
+function inPeriod(e,p){
+ let d=new Date(e.date+'T00:00:00'),n=new Date();
+ if(p==='day')return e.date===dateISO(n);
+ if(p==='month')return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();
+ if(p==='week'){
+  let start=new Date(n);
+  start.setDate(n.getDate()-((n.getDay()+6)%7));
+  start.setHours(0,0,0,0);
+  return d>=start&&d<=n;
+ }
+ return true;
+}
+
+function render(){
+ let p=el('period').value;
+ let arr=entries.filter(e=>inPeriod(e,p));
+ let i=arr.filter(e=>e.type==='income').reduce((s,e)=>s+Number(e.amount),0);
+ let x=arr.filter(e=>e.type==='expense').reduce((s,e)=>s+Number(e.amount),0);
+ el('income').textContent='Rs '+i.toLocaleString();
+ el('expense').textContent='Rs '+x.toLocaleString();
+ el('balance').textContent='Rs '+(i-x).toLocaleString();
+
+ el('history').innerHTML=arr.map(e=>{
+  let idx=entries.indexOf(e);
+  return `<li><b>${e.type==='income'?'آمدن':'خرچ'}: Rs ${Number(e.amount).toLocaleString()}</b><br>${escapeHTML(e.category)} — ${escapeHTML(e.date)}<br><small>${escapeHTML(e.note||'')}</small><button onclick="del(${idx})">حذف</button></li>`;
+ }).join('')||'<li>ابھی کوئی ریکارڈ نہیں</li>';
+}
+
+function escapeHTML(s){
+ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function del(i){
+ if(confirm('یہ انٹری حذف کریں؟')){
+  entries.splice(i,1);
+  save();
+ }
+}
+
+function backup(){
+ let b=new Blob([JSON.stringify(entries,null,2)],{type:'application/json'});
+ let a=document.createElement('a');
+ a.href=URL.createObjectURL(b);
+ a.download='mera-hisab-backup.json';
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+
+function restore(ev){
+ let f=ev.target.files[0];
+ if(!f)return;
+ let r=new FileReader();
+ r.onload=()=>{
+  try{
+   let d=JSON.parse(r.result);
+   if(Array.isArray(d)){
+    entries=d;
+    save();
+    alert('بیک اپ بحال ہوگیا');
+   }else alert('غلط فائل');
+  }catch(e){alert('فائل درست نہیں');}
+ };
+ r.readAsText(f);
+}
+
+function exportCSV(){
+ let rows=[['Type','Amount','Category','Date','Note'],...entries.map(e=>[e.type,e.amount,e.category,e.date,e.note])];
+ let csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
+ let a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+ a.download='mera-hisab.csv';
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+
 render();
-</script></body></html>
+</script>
+</body>
+</html>
