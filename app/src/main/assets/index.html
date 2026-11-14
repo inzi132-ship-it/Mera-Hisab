@@ -5,184 +5,184 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mera Hisab</title>
 <style>
-*{box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:#f4f6f8;color:#18212b;margin:0;padding:16px}
-.header{text-align:center;background:linear-gradient(145deg,#075b45,#138365);color:#fff;padding:22px 12px;border-radius:18px;margin-bottom:14px;box-shadow:0 4px 12px #0002}
-.logo{width:105px;height:105px;margin:auto auto 10px;background:linear-gradient(145deg,#f9e5a5,#c99a35);border:4px solid #fff;border-radius:25px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 3px 10px #0003}
-.logo .rs{font-size:39px;font-weight:900;color:#075b45}
-.logo .coin{position:absolute;right:-8px;top:-8px;background:#fff0c2;color:#956713;border:2px solid #bd9136;border-radius:50%;width:30px;height:30px;font-weight:bold;display:grid;place-items:center}
-.logo .chart{position:absolute;bottom:5px;left:8px;color:#075b45;font-size:19px}
-.logo .calc{position:absolute;bottom:5px;right:8px;color:#075b45;font-size:19px}
-.header h1{font-size:25px;margin:5px 0;color:#fff}
-.tagline{font-size:13px;color:#f9e7b5;letter-spacing:.3px}
-.card{background:white;padding:14px;border-radius:14px;margin:10px 0;box-shadow:0 2px 8px #0001}
-h3{margin-top:3px;color:#126b55}
-input,select,button{width:100%;padding:12px;margin:6px 0;border:1px solid #ccd4d9;border-radius:9px;font-size:16px}
-button{background:#126b55;color:white;border:0;font-weight:bold}
-.stats{display:flex;gap:8px}
-.stats div{flex:1;background:#e8f4ef;padding:12px 5px;border-radius:10px;text-align:center;font-size:14px}
-small{color:#65727c}
-li{padding:8px 0;border-bottom:1px solid #eee;overflow-wrap:anywhere}
+*{box-sizing:border-box}body{margin:0;padding:14px;background:#f3f6f4;color:#20312b;font-family:Arial,sans-serif}
+.header{background:linear-gradient(140deg,#064b39,#138365);color:white;text-align:center;padding:20px;border-radius:18px;margin-bottom:14px}
+.logo{width:82px;height:82px;margin:0 auto 9px;border-radius:22px;background:linear-gradient(145deg,#ffedb7,#c99b3c);border:3px solid white;display:grid;place-items:center;color:#07543f;font-size:30px;font-weight:900;box-shadow:0 3px 10px #0003}
+h1{font-size:25px;margin:5px}.tagline{font-size:13px;color:#ffedc1}
+.card{background:white;padding:14px;border-radius:14px;margin:12px 0;box-shadow:0 2px 9px #0001}
+h3{color:#126b55;margin:3px 0 12px}
+input,select,button{width:100%;padding:12px;margin:6px 0;border:1px solid #ccd7d1;border-radius:9px;font-size:15px;background:white}
+button{background:#126b55;color:white;border:0;font-weight:bold;cursor:pointer}
+button.secondary{background:#dcece5;color:#07543f}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.stat{background:#eaf4ef;border-radius:11px;padding:11px;text-align:center;font-size:13px;min-width:0}
+.stat b{display:block;margin-top:6px;font-size:16px;color:#07543f;overflow-wrap:anywhere}
+ul{padding:0;margin:0}li{list-style:none;border-bottom:1px solid #edf0ee;padding:10px 0;overflow-wrap:anywhere}
+.small{font-size:12px;color:#68766f}.row{display:flex;gap:8px;align-items:center}.row>*{min-width:0;flex:1}
+[dir=rtl]{text-align:right}#app{display:none}
+#languageScreen{max-width:420px;margin:15vh auto;background:white;padding:22px;border-radius:18px;box-shadow:0 2px 12px #0002;text-align:center}
 </style>
 </head>
 <body>
+<div id="languageScreen">
+ <div class="logo">Rs</div><h2>Ù…ÛŒØ±Ø§ Ø­Ø³Ø§Ø¨</h2>
+ <p id="chooseText">Ø§Ù¾Ù†ÛŒ Ø²Ø¨Ø§Ù† Ù…Ù†ØªØ®Ø¨ Ú©Ø±ÛŒÚº</p>
+ <select id="firstLanguage">
+  <option value="ur">Ø§Ø±Ø¯Ùˆ</option><option value="en">English</option><option value="hi">à¤¹à¤¿à¤¨à¥à¤¦à¥€</option><option value="es">EspaÃ±ol</option><option value="fr">FranÃ§ais</option>
+ </select>
+ <button id="startButton" onclick="startApp()">Ø´Ø±ÙˆØ¹ Ú©Ø±ÛŒÚº</button>
+</div>
 
-<div class="header">
-  <div class="logo">
-    <span class="coin">Rs</span>
-    <span class="rs">Rs</span>
-    <span class="chart">📈</span>
-    <span class="calc">▦</span>
+<div id="app">
+ <div class="header"><div class="logo">Rs</div><h1 id="appTitle">Ù…ÛŒØ±Ø§ Ø­Ø³Ø§Ø¨</h1><div class="tagline">Apne Kharchay Ka Pura Hisab</div></div>
+ <div class="card">
+  <div class="row"><h3 id="dashboardTitle">ÚˆÛŒØ´ Ø¨ÙˆØ±Úˆ</h3>
+   <select id="language" onchange="changeLanguage(this.value)" aria-label="Language">
+    <option value="ur">Ø§Ø±Ø¯Ùˆ</option><option value="en">English</option><option value="hi">à¤¹à¤¿à¤¨à¥à¤¦à¥€</option><option value="es">EspaÃ±ol</option><option value="fr">FranÃ§ais</option>
+   </select>
   </div>
-  <h1>میرا حساب</h1>
-  <div class="tagline">Apne Kharchay Ka Pura Hisab</div>
-</div>
-
-<div class="stats">
-  <div>آمدن<br><b id="income">Rs 0</b></div>
-  <div>خرچ<br><b id="expense">Rs 0</b></div>
-  <div>بقیہ<br><b id="balance">Rs 0</b></div>
-</div>
-
-<div class="card">
-<h3>نئی انٹری</h3>
-<select id="type">
-<option value="income">آمدن</option>
-<option value="expense">خرچ</option>
-</select>
-<input id="amount" type="number" min="1" placeholder="رقم (PKR)">
-<input id="category" placeholder="کیٹیگری مثلاً تنخواہ، کھانا">
-<input id="date" type="date">
-<input id="note" placeholder="تفصیل (اختیاری)">
-<button onclick="add()">محفوظ کریں</button>
-</div>
-
-<div class="card">
-<h3>رپورٹ</h3>
-<select id="period" onchange="render()">
-<option value="all">تمام ریکارڈ</option>
-<option value="day">آج</option>
-<option value="week">اس ہفتے</option>
-<option value="month">اس مہینے</option>
-</select>
-<ul id="history"></ul>
-<button onclick="exportCSV()">CSV ایکسپورٹ</button>
-<button onclick="backup()">بیک اپ ڈاؤن لوڈ</button>
-<input type="file" id="restoreFile" accept="application/json" onchange="restore(event)">
-<small>ڈیٹا اسی موبائل میں محفوظ رہتا ہے۔ بیک اپ اختیاری ہے۔</small>
+  <div id="reports" class="stats"></div>
+ </div>
+ <div class="card">
+  <h3 id="entryTitle">Ù†Ø¦ÛŒ Ø§Ù†Ù¹Ø±ÛŒ</h3>
+  <select id="type" onchange="fillCategories()"><option value="income">Ø¢Ù…Ø¯Ù†</option><option value="expense">Ø®Ø±Ú†</option></select>
+  <input id="amount" type="number" min="0.01" step="0.01" placeholder="Ø±Ù‚Ù… (PKR)">
+  <select id="category"></select>
+  <input id="categoryCustom" placeholder="Ø§Ù¾Ù†ÛŒ Ú©ÛŒÙ¹ÛŒÚ¯Ø±ÛŒ (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)">
+  <input id="date" type="date">
+  <input id="note" placeholder="ØªÙØµÛŒÙ„ (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)">
+  <button id="saveButton" onclick="addEntry()">Ù…Ø­ÙÙˆØ¸ Ú©Ø±ÛŒÚº</button>
+ </div>
+ <div class="card">
+  <h3 id="historyTitle">Ø±ÛŒÚ©Ø§Ø±Úˆ</h3>
+  <select id="period" onchange="renderHistory()">
+   <option value="all">ØªÙ…Ø§Ù… Ø±ÛŒÚ©Ø§Ø±Úˆ</option><option value="day">Ø¢Ø¬</option><option value="week">Ø§Ø³ ÛÙØªÛ’</option><option value="month">Ø§Ø³ Ù…ÛÛŒÙ†Û’</option>
+  </select>
+  <ul id="history"></ul>
+ </div>
+ <div class="card">
+  <h3 id="backupTitle">ÚˆÛŒÙ¹Ø§ Ø§ÙˆØ± Ø¨ÛŒÚ© Ø§Ù¾</h3>
+  <button id="csvButton" onclick="exportCSV()">CSV Ø§ÛŒÚ©Ø³Ù¾ÙˆØ±Ù¹</button>
+  <button id="backupButton" class="secondary" onclick="backup()">Ø¨ÛŒÚ© Ø§Ù¾ ÚˆØ§Ø¤Ù† Ù„ÙˆÚˆ</button>
+  <input type="file" id="restoreFile" accept="application/json" onchange="restoreBackup(event)">
+  <p id="backupNote" class="small">Ø¢Ù¾ Ú©Ø§ ÚˆÛŒÙ¹Ø§ Ø§Ø³ÛŒ Ù…ÙˆØ¨Ø§Ø¦Ù„ Ù…ÛŒÚº Ù…Ø­ÙÙˆØ¸ Ø±ÛØªØ§ ÛÛ’Û” ÙˆÙ‚ØªØ§Ù‹ ÙÙˆÙ‚ØªØ§Ù‹ Ø¨ÛŒÚ© Ø§Ù¾ Ø¨Ù†Ø§Ø¦ÛŒÚºÛ”</p>
+ </div>
 </div>
 
 <script>
-const key='meraHisabEntries';
-const el=id=>document.getElementById(id);
+const DATA_KEY='meraHisabEntries', LANG_KEY='meraHisabLanguage';
+const $=id=>document.getElementById(id);
+const W={
+ur:{app:'Ù…ÛŒØ±Ø§ Ø­Ø³Ø§Ø¨',dashboard:'Ù…Ø§Ù„ÛŒØ§ØªÛŒ ÚˆÛŒØ´ Ø¨ÙˆØ±Úˆ',entry:'Ù†Ø¦ÛŒ Ø§Ù†Ù¹Ø±ÛŒ',history:'Ø±ÛŒÚ©Ø§Ø±Úˆ / ÛØ³Ù¹Ø±ÛŒ',backup:'ÚˆÛŒÙ¹Ø§ Ø§ÙˆØ± Ø¨ÛŒÚ© Ø§Ù¾',income:'Ø¢Ù…Ø¯Ù†',expense:'Ø®Ø±Ú†',balance:'Ø¨Ù‚ÛŒÛ',today:'Ø¢Ø¬',week:'Ø§Ø³ ÛÙØªÛ’',month:'Ø§Ø³ Ù…ÛÛŒÙ†Û’',all:'ØªÙ…Ø§Ù… Ø±ÛŒÚ©Ø§Ø±Úˆ',amount:'Ø±Ù‚Ù… (PKR)',custom:'Ø§Ù¾Ù†ÛŒ Ú©ÛŒÙ¹ÛŒÚ¯Ø±ÛŒ (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)',note:'ØªÙØµÛŒÙ„ (Ø§Ø®ØªÛŒØ§Ø±ÛŒ)',save:'Ù…Ø­ÙÙˆØ¸ Ú©Ø±ÛŒÚº',csv:'CSV Ø§ÛŒÚ©Ø³Ù¾ÙˆØ±Ù¹',download:'Ø¨ÛŒÚ© Ø§Ù¾ ÚˆØ§Ø¤Ù† Ù„ÙˆÚˆ',backupNote:'Ø¢Ù¾ Ú©Ø§ ÚˆÛŒÙ¹Ø§ Ø§Ø³ÛŒ Ù…ÙˆØ¨Ø§Ø¦Ù„ Ù…ÛŒÚº Ù…Ø­ÙÙˆØ¸ Ø±ÛØªØ§ ÛÛ’Û” ÙˆÙ‚ØªØ§Ù‹ ÙÙˆÙ‚ØªØ§Ù‹ Ø¨ÛŒÚ© Ø§Ù¾ Ø¨Ù†Ø§Ø¦ÛŒÚºÛ”',choose:'Ø§Ù¾Ù†ÛŒ Ø²Ø¨Ø§Ù† Ù…Ù†ØªØ®Ø¨ Ú©Ø±ÛŒÚº',start:'Ø´Ø±ÙˆØ¹ Ú©Ø±ÛŒÚº',no:'Ø§Ø¨Ú¾ÛŒ Ú©ÙˆØ¦ÛŒ Ø±ÛŒÚ©Ø§Ø±Úˆ Ù†ÛÛŒÚº',invalid:'Ø¯Ø±Ø³Øª Ø±Ù‚Ù… Ø¯Ø±Ø¬ Ú©Ø±ÛŒÚº',deleteAsk:'Ú©ÛŒØ§ ÛŒÛ Ø§Ù†Ù¹Ø±ÛŒ Ø­Ø°Ù Ú©Ø±Ù†ÛŒ ÛÛ’ØŸ',deleted:'Ø§Ù†Ù¹Ø±ÛŒ Ø­Ø°Ù ÛÙˆÚ¯Ø¦ÛŒ',restored:'Ø¨ÛŒÚ© Ø§Ù¾ Ø¨Ø­Ø§Ù„ ÛÙˆÚ¯ÛŒØ§',bad:'ÙØ§Ø¦Ù„ Ø¯Ø±Ø³Øª Ù†ÛÛŒÚº',restoreAsk:'Ù…ÙˆØ¬ÙˆØ¯Û Ø±ÛŒÚ©Ø§Ø±Úˆ Ú©ÛŒ Ø¬Ú¯Û Ø¨ÛŒÚ© Ø§Ù¾ Ø¨Ø­Ø§Ù„ Ú©Ø±Ù†Ø§ ÛÛ’ØŸ',other:'Ø¯ÛŒÚ¯Ø±',salary:'ØªÙ†Ø®ÙˆØ§Û',business:'Ú©Ø§Ø±ÙˆØ¨Ø§Ø±',food:'Ú©Ú¾Ø§Ù†Ø§',transport:'Ù¹Ø±Ø§Ù†Ø³Ù¾ÙˆØ±Ù¹',shopping:'Ø®Ø±ÛŒØ¯Ø§Ø±ÛŒ',bills:'Ø¨Ù„Ø²',rent:'Ú©Ø±Ø§ÛŒÛ',medical:'Ø¹Ù„Ø§Ø¬',education:'ØªØ¹Ù„ÛŒÙ…',entertainment:'ØªÙØ±ÛŒØ­',utilities:'ÛŒÙˆÙ¹ÛŒÙ„Ù¹ÛŒ Ø¨Ù„Ø²',category:'Ú©ÛŒÙ¹ÛŒÚ¯Ø±ÛŒ Ù…Ù†ØªØ®Ø¨ Ú©Ø±ÛŒÚº'},
+en:{app:'Mera Hisab',dashboard:'Financial Dashboard',entry:'New Entry',history:'Transaction History',backup:'Data & Backup',income:'Income',expense:'Expense',balance:'Balance',today:'Today',week:'This Week',month:'This Month',all:'All Time',amount:'Amount (PKR)',custom:'Custom category (optional)',note:'Description (optional)',save:'Save Entry',csv:'Export CSV',download:'Download Backup',backupNote:'Your data is saved on this phone. Make backups regularly.',choose:'Choose your language',start:'Start',no:'No records yet',invalid:'Enter a valid amount',deleteAsk:'Delete this entry?',deleted:'Entry deleted',restored:'Backup restored',bad:'Invalid file',restoreAsk:'Replace current records with this backup?',other:'Other',salary:'Salary',business:'Business',food:'Food',transport:'Transport',shopping:'Shopping',bills:'Bills',rent:'Rent',medical:'Medical',education:'Education',entertainment:'Entertainment',utilities:'Utilities',category:'Select category'},
+hi:{app:'à¤®à¥‡à¤°à¤¾ à¤¹à¤¿à¤¸à¤¾à¤¬',dashboard:'à¤µà¤¿à¤¤à¥à¤¤à¥€à¤¯ à¤¡à¥ˆà¤¶à¤¬à¥‹à¤°à¥à¤¡',entry:'à¤¨à¤ˆ à¤à¤‚à¤Ÿà¥à¤°à¥€',history:'à¤²à¥‡à¤¨-à¤¦à¥‡à¤¨',backup:'à¤¡à¥‡à¤Ÿà¤¾ à¤”à¤° à¤¬à¥ˆà¤•à¤…à¤ª',income:'à¤†à¤¯',expense:'à¤–à¤°à¥à¤š',balance:'à¤¬à¤¾à¤•à¥€',today:'à¤†à¤œ',week:'à¤‡à¤¸ à¤¸à¤ªà¥à¤¤à¤¾à¤¹',month:'à¤‡à¤¸ à¤®à¤¹à¥€à¤¨à¥‡',all:'à¤¸à¤­à¥€ à¤°à¤¿à¤•à¥‰à¤°à¥à¤¡',amount:'à¤°à¤¾à¤¶à¤¿ (PKR)',custom:'à¤…à¤ªà¤¨à¥€ à¤¶à¥à¤°à¥‡à¤£à¥€ (à¤µà¥ˆà¤•à¤²à¥à¤ªà¤¿à¤•)',note:'à¤µà¤¿à¤µà¤°à¤£ (à¤µà¥ˆà¤•à¤²à¥à¤ªà¤¿à¤•)',save:'à¤¸à¥‡à¤µ à¤•à¤°à¥‡à¤‚',csv:'CSV à¤à¤•à¥à¤¸à¤ªà¥‹à¤°à¥à¤Ÿ',download:'à¤¬à¥ˆà¤•à¤…à¤ª à¤¡à¤¾à¤‰à¤¨à¤²à¥‹à¤¡',backupNote:'à¤†à¤ªà¤•à¤¾ à¤¡à¥‡à¤Ÿà¤¾ à¤‡à¤¸à¥€ à¤«à¥‹à¤¨ à¤®à¥‡à¤‚ à¤¸à¥‡à¤µ à¤°à¤¹à¤¤à¤¾ à¤¹à¥ˆà¥¤ à¤¨à¤¿à¤¯à¤®à¤¿à¤¤ à¤¬à¥ˆà¤•à¤…à¤ª à¤¬à¤¨à¤¾à¤à¤‚à¥¤',choose:'à¤…à¤ªà¤¨à¥€ à¤­à¤¾à¤·à¤¾ à¤šà¥à¤¨à¥‡à¤‚',start:'à¤¶à¥à¤°à¥‚ à¤•à¤°à¥‡à¤‚',no:'à¤…à¤­à¥€ à¤•à¥‹à¤ˆ à¤°à¤¿à¤•à¥‰à¤°à¥à¤¡ à¤¨à¤¹à¥€à¤‚',invalid:'à¤¸à¤¹à¥€ à¤°à¤¾à¤¶à¤¿ à¤¦à¤°à¥à¤œ à¤•à¤°à¥‡à¤‚',deleteAsk:'à¤•à¥à¤¯à¤¾ à¤¯à¤¹ à¤à¤‚à¤Ÿà¥à¤°à¥€ à¤¹à¤Ÿà¤¾à¤¨à¥€ à¤¹à¥ˆ?',deleted:'à¤à¤‚à¤Ÿà¥à¤°à¥€ à¤¹à¤Ÿà¤¾ à¤¦à¥€ à¤—à¤ˆ',restored:'à¤¬à¥ˆà¤•à¤…à¤ª à¤¬à¤¹à¤¾à¤² à¤¹à¥‹ à¤—à¤¯à¤¾',bad:'à¤—à¤²à¤¤ à¤«à¤¼à¤¾à¤‡à¤²',restoreAsk:'à¤•à¥à¤¯à¤¾ à¤®à¥Œà¤œà¥‚à¤¦à¤¾ à¤°à¤¿à¤•à¥‰à¤°à¥à¤¡ à¤•à¥€ à¤œà¤—à¤¹ à¤¬à¥ˆà¤•à¤…à¤ª à¤¬à¤¹à¤¾à¤² à¤•à¤°à¥‡à¤‚?',other:'à¤…à¤¨à¥à¤¯',salary:'à¤µà¥‡à¤¤à¤¨',business:'à¤µà¥à¤¯à¤µà¤¸à¤¾à¤¯',food:'à¤–à¤¾à¤¨à¤¾',transport:'à¤¯à¤¾à¤¤à¥à¤°à¤¾',shopping:'à¤–à¤°à¥€à¤¦à¤¾à¤°à¥€',bills:'à¤¬à¤¿à¤²',rent:'à¤•à¤¿à¤°à¤¾à¤¯à¤¾',medical:'à¤šà¤¿à¤•à¤¿à¤¤à¥à¤¸à¤¾',education:'à¤¶à¤¿à¤•à¥à¤·à¤¾',entertainment:'à¤®à¤¨à¥‹à¤°à¤‚à¤œà¤¨',utilities:'à¤‰à¤ªà¤¯à¥‹à¤—à¤¿à¤¤à¤¾à¤à¤',category:'à¤¶à¥à¤°à¥‡à¤£à¥€ à¤šà¥à¤¨à¥‡à¤‚'},
+es:{app:'Mera Hisab',dashboard:'Panel financiero',entry:'Nuevo registro',history:'Historial',backup:'Datos y copia',income:'Ingresos',expense:'Gastos',balance:'Saldo',today:'Hoy',week:'Esta semana',month:'Este mes',all:'Todo',amount:'Importe (PKR)',custom:'CategorÃ­a propia (opcional)',note:'DescripciÃ³n (opcional)',save:'Guardar',csv:'Exportar CSV',download:'Descargar copia',backupNote:'Tus datos se guardan en este telÃ©fono. Haz copias regularmente.',choose:'Elige tu idioma',start:'Comenzar',no:'AÃºn no hay registros',invalid:'Introduce un importe vÃ¡lido',deleteAsk:'Â¿Eliminar este registro?',deleted:'Registro eliminado',restored:'Copia restaurada',bad:'Archivo no vÃ¡lido',restoreAsk:'Â¿Reemplazar los registros actuales con esta copia?',other:'Otro',salary:'Salario',business:'Negocio',food:'Comida',transport:'Transporte',shopping:'Compras',bills:'Facturas',rent:'Alquiler',medical:'Salud',education:'EducaciÃ³n',entertainment:'Ocio',utilities:'Servicios',category:'Elegir categorÃ­a'},
+fr:{app:'Mera Hisab',dashboard:'Tableau de bord',entry:'Nouvelle entrÃ©e',history:'Historique',backup:'DonnÃ©es et sauvegarde',income:'Revenus',expense:'DÃ©penses',balance:'Solde',today:'Aujourdâ€™hui',week:'Cette semaine',month:'Ce mois',all:'Tout',amount:'Montant (PKR)',custom:'CatÃ©gorie personnelle (facultatif)',note:'Description (facultatif)',save:'Enregistrer',csv:'Exporter CSV',download:'TÃ©lÃ©charger la sauvegarde',backupNote:'Vos donnÃ©es sont enregistrÃ©es sur ce tÃ©lÃ©phone. Faites des sauvegardes rÃ©guliÃ¨rement.',choose:'Choisissez votre langue',start:'Commencer',no:'Aucun enregistrement',invalid:'Saisissez un montant valide',deleteAsk:'Supprimer cette entrÃ©e ?',deleted:'EntrÃ©e supprimÃ©e',restored:'Sauvegarde restaurÃ©e',bad:'Fichier invalide',restoreAsk:'Remplacer les donnÃ©es actuelles par cette sauvegarde ?',other:'Autre',salary:'Salaire',business:'Entreprise',food:'Nourriture',transport:'Transport',shopping:'Achats',bills:'Factures',rent:'Loyer',medical:'SantÃ©',education:'Ã‰ducation',entertainment:'Loisirs',utilities:'Services',category:'Choisir une catÃ©gorie'}
+};
+let lang=localStorage.getItem(LANG_KEY)||'';
 let entries=[];
-try{
- entries=JSON.parse(localStorage.getItem(key)||'[]');
- if(!Array.isArray(entries)) entries=[];
-}catch(e){entries=[];}
-
-el('date').value=dateISO(new Date());
-
-function dateISO(d){
- return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+try{const a=JSON.parse(localStorage.getItem(DATA_KEY)||'[]');if(Array.isArray(a))entries=a;}catch(e){entries=[];}
+function t(k){return (W[lang]||W.ur)[k]||k;}
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function startApp(){lang=$('firstLanguage').value;localStorage.setItem(LANG_KEY,lang);$('languageScreen').style.display='none';$('app').style.display='block';$('language').value=lang;applyLanguage();}
+function changeLanguage(v){lang=v;localStorage.setItem(LANG_KEY,v);applyLanguage();}
+function applyLanguage(){
+ const rtl=lang==='ur';document.documentElement.lang=lang;document.documentElement.dir=rtl?'rtl':'ltr';document.body.dir=rtl?'rtl':'ltr';
+ $('appTitle').textContent=t('app');$('dashboardTitle').textContent=t('dashboard');$('entryTitle').textContent=t('entry');$('historyTitle').textContent=t('history');$('backupTitle').textContent=t('backup');$('saveButton').textContent=t('save');$('csvButton').textContent=t('csv');$('backupButton').textContent=t('download');$('backupNote').textContent=t('backupNote');$('chooseText').textContent=t('choose');$('startButton').textContent=t('start');
+ $('amount').placeholder=t('amount');$('categoryCustom').placeholder=t('custom');$('note').placeholder=t('note');
+ const typ=$('type');typ.options[0].text=t('income');typ.options[1].text=t('expense');
+ const p=$('period');p.options[0].text=t('all');p.options[1].text=t('today');p.options[2].text=t('week');p.options[3].text=t('month');
+ fillCategories();renderDashboard();renderHistory();
 }
-
-function save(){
- localStorage.setItem(key,JSON.stringify(entries));
- render();
+function fillCategories(){
+ const list=$('type').value==='income'?['salary','business','other']:['food','transport','shopping','bills','rent','medical','education','entertainment','utilities','other'];
+ $('category').innerHTML='';
+ const first=document.createElement('option');first.value='';first.textContent=t('category');$('category').appendChild(first);
+ list.forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=t(k);$('category').appendChild(o);});
 }
-
-function add(){
- let a=Number(el('amount').value);
- if(!a||a<=0){alert('درست رقم درج کریں');return;}
- entries.unshift({
- type:el('type').value,
- amount:a,
- category:el('category').value||'دیگر',
- date:el('date').value||dateISO(new Date()),
- note:el('note').value
- });
- el('amount').value='';
- el('note').value='';
- save();
+function saveData(){localStorage.setItem(DATA_KEY,JSON.stringify(entries));renderDashboard();renderHistory();}
+function addEntry(){
+ const amount=Number($('amount').value);
+ if(!Number.isFinite(amount)||amount<=0){alert(t('invalid'));return;}
+ const custom=$('categoryCustom').value.trim(),chosen=$('category').value;
+ const category=custom||chosen||'other';
+ entries.unshift({type:$('type').value,amount,category,date:$('date').value||todayISO(),note:$('note').value.trim()});
+ $('amount').value='';$('categoryCustom').value='';$('note').value='';$('date').value=todayISO();
+ saveData();
 }
-
-function inPeriod(e,p){
- let d=new Date(e.date+'T00:00:00'),n=new Date();
- if(p==='day')return e.date===dateISO(n);
- if(p==='month')return d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();
- if(p==='week'){
-  let start=new Date(n);
-  start.setDate(n.getDate()-((n.getDay()+6)%7));
-  start.setHours(0,0,0,0);
-  return d>=start&&d<=n;
- }
+function weekStart(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return x;}
+function inRange(e,period){
+ const d=new Date(String(e.date)+'T00:00:00'),now=new Date(),today=new Date(todayISO()+'T00:00:00');
+ if(isNaN(d))return false;
+ if(period==='day')return e.date===todayISO();
+ if(period==='month')return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+ if(period==='week')return d>=weekStart(today)&&d<=today;
  return true;
 }
-
-function render(){
- let p=el('period').value;
- let arr=entries.filter(e=>inPeriod(e,p));
- let i=arr.filter(e=>e.type==='income').reduce((s,e)=>s+Number(e.amount),0);
- let x=arr.filter(e=>e.type==='expense').reduce((s,e)=>s+Number(e.amount),0);
- el('income').textContent='Rs '+i.toLocaleString();
- el('expense').textContent='Rs '+x.toLocaleString();
- el('balance').textContent='Rs '+(i-x).toLocaleString();
-
- el('history').innerHTML=arr.map(e=>{
-  let idx=entries.indexOf(e);
-  return `<li><b>${e.type==='income'?'آمدن':'خرچ'}: Rs ${Number(e.amount).toLocaleString()}</b><br>${escapeHTML(e.category)} — ${escapeHTML(e.date)}<br><small>${escapeHTML(e.note||'')}</small><button onclick="del(${idx})">حذف</button></li>`;
- }).join('')||'<li>ابھی کوئی ریکارڈ نہیں</li>';
+function totals(arr){
+ let inc=0,exp=0;
+ arr.forEach(e=>{if(e.type==='income')inc+=Number(e.amount)||0;else if(e.type==='expense')exp+=Number(e.amount)||0;});
+ return {inc,exp,bal:inc-exp};
 }
-
-function escapeHTML(s){
- return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function money(n){return 'Rs '+Number(n||0).toLocaleString(undefined,{maximumFractionDigits:2});}
+function renderDashboard(){
+ const periods=['day','week','month','all'];
+ $('reports').innerHTML='';
+ periods.forEach(p=>{
+  const x=totals(entries.filter(e=>inRange(e,p)));
+  const box=document.createElement('div');box.className='stat';
+  const title=document.createElement('div');title.textContent=t(p);box.appendChild(title);
+  [[t('income'),x.inc],[t('expense'),x.exp],[t('balance'),x.bal]].forEach(pair=>{
+   const line=document.createElement('div');line.style.marginTop='7px';
+   line.textContent=pair[0]+': ';
+   const b=document.createElement('b');b.textContent=money(pair[1]);line.appendChild(b);box.appendChild(line);
+  });
+  $('reports').appendChild(box);
+ });
 }
-
-function del(i){
- if(confirm('یہ انٹری حذف کریں؟')){
-  entries.splice(i,1);
-  save();
- }
+function renderHistory(){
+ const arr=entries.filter(e=>inRange(e,$('period').value));const ul=$('history');ul.innerHTML='';
+ if(!arr.length){const li=document.createElement('li');li.textContent=t('no');ul.appendChild(li);return;}
+ arr.forEach(e=>{
+  const index=entries.indexOf(e),li=document.createElement('li');
+  const title=document.createElement('b');title.textContent=(e.type==='income'?t('income'):t('expense'))+' â€” '+money(e.amount);li.appendChild(title);
+  const detail=document.createElement('div');detail.textContent=String(e.category||'')+' | '+String(e.date||'');li.appendChild(detail);
+  if(e.note){const note=document.createElement('div');note.className='small';note.textContent=e.note;li.appendChild(note);}
+  const del=document.createElement('button');del.textContent='Ã— '+(lang==='ur'?'Ø­Ø°Ù':lang==='en'?'Delete':lang==='hi'?'à¤¹à¤Ÿà¤¾à¤à¤‚':lang==='es'?'Eliminar':'Supprimer');del.className='secondary';del.onclick=()=>deleteEntry(index);li.appendChild(del);
+  ul.appendChild(li);
+ });
 }
-
+function deleteEntry(i){if(confirm(t('deleteAsk'))){entries.splice(i,1);saveData();}}
 function backup(){
- let b=new Blob([JSON.stringify(entries,null,2)],{type:'application/json'});
- let a=document.createElement('a');
- a.href=URL.createObjectURL(b);
- a.download='mera-hisab-backup.json';
- a.click();
- URL.revokeObjectURL(a.href);
+ const blob=new Blob([JSON.stringify(entries,null,2)],{type:'application/json'});
+ downloadBlob(blob,'mera-hisab-backup.json');
 }
-
-function restore(ev){
- let f=ev.target.files[0];
- if(!f)return;
- let r=new FileReader();
- r.onload=()=>{
-  try{
-   let d=JSON.parse(r.result);
-   if(Array.isArray(d)){
-    entries=d;
-    save();
-    alert('بیک اپ بحال ہوگیا');
-   }else alert('غلط فائل');
-  }catch(e){alert('فائل درست نہیں');}
- };
- r.readAsText(f);
-}
-
 function exportCSV(){
- let rows=[['Type','Amount','Category','Date','Note'],...entries.map(e=>[e.type,e.amount,e.category,e.date,e.note])];
- let csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');
- let a=document.createElement('a');
- a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
- a.download='mera-hisab.csv';
- a.click();
- URL.revokeObjectURL(a.href);
+ const rows=[['Type','Amount','Category','Date','Note'],...entries.map(e=>[e.type,e.amount,e.category,e.date,e.note||''])];
+ const csv='\uFEFF'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ downloadBlob(new Blob([csv],{type:'text/csv;charset=utf-8'}),'mera-hisab.csv');
 }
-
-render();
+function downloadBlob(blob,name){
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function restoreBackup(ev){
+ const file=ev.target.files&&ev.target.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const data=JSON.parse(reader.result);
+   if(!Array.isArray(data)||!data.every(e=>e&&typeof e==='object'&&['income','expense'].includes(e.type)&&Number.isFinite(Number(e.amount)))){
+    alert(t('bad'));return;
+   }
+   if(!confirm(t('restoreAsk')))return;
+   entries=data;saveData();alert(t('restored'));
+  }catch(e){alert(t('bad'));}
+  finally{$('restoreFile').value='';}
+ };
+ reader.readAsText(file);
+}
+$('date').value=todayISO();
+if(lang){$('languageScreen').style.display='none';$('app').style.display='block';$('language').value=lang;applyLanguage();}
 </script>
 </body>
 </html>
